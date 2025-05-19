@@ -2,131 +2,224 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Game Đoán Ảnh - Đăng nhập</title>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <title>IGUESS </title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    .image-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .image-container img {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .image-container img:hover {
-      transform: scale(1.05);
-    }
-    #result {
-      font-size: 24px;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    /* Style form đăng nhập */
-    #loginForm {
-      margin: 40px auto;
-      max-width: 300px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f9f9f9;
-    }
-    #loginForm input[type="text"],
-    #loginForm input[type="password"] {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    #loginForm button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    #loginForm button:hover {
-      background-color: #45a049;
-    }
-    #loginError {
-      color: red;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+  /* NỀN ĐỘNG */
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 101vh;
+    margin: 0;
+    background: linear-gradient(135deg, #CCFF99, #c2e9fb);
+    animation: bgMove 10s ease infinite alternate;
+  }
+
+  @keyframes bgMove {
+    0% { background-position: left top; }
+    100% { background-position: right bottom; }
+  }
+
+  h1 {
+    color: #333333;
+    font-size: 3.0rem;
+    margin-bottom: 10px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  /* HIỆU ỨNG FADE */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #loginForm, #playbutton, #gameContent {
+    background: #FFFFCC;
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid #339900;
+    box-shadow: 0 8px 32px #339900;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  input:focus {
+    border-color: #007bff;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+
+  #error {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  #gameContent {
+    text-align: center;
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .image-container img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .image-container img:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  #result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    opacity: 0.7;
+  }
+  #particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+</style>
+
 </head>
 <body>
 
-<h1> Game Đoán Ảnh Con Vật</h1>
+<div id="particles-js"></div>
+<script>
+particlesJS("particles-js", {
+  particles: {
+    number: { value: 150 },
+    color: { value: "#fff" },
+    shape: { type: "squares" },
+    opacity: { value: 0.9 },
+    size: { value: 2 },
+    move: {
+      direction: "bottom",
+      speed: 1
+    }
+  },
+  interactivity: { detect_on: "canvas", events: { onhover: { enable: false } } },
+  retina_detect: true
+});
+</script>
+<h1> IGUESS - ĐOÁN ẢNH 💻</h1>
 
 <!-- Form đăng nhập -->
 <div id="loginForm">
   <h2>Đăng nhập để chơi</h2>
   <input type="text" id="username" placeholder="Tên tài khoản" />
+  <br />
   <input type="password" id="password" placeholder="Mật khẩu" />
   <br />
   <button onclick="login()">Đăng nhập</button>
   <div id="loginError"></div>
 </div>
 
+<div id="playbutton" style="display:none;">
+  <button id="startBtn" onclick="startGame()">Bắt đầu chơi</button>
+</div>
+
 <!-- Game sẽ ẩn khi chưa đăng nhập -->
 <div id="gameContent" style="display:none;">
-  <h2> Đâu là hình ảnh chứa: <span id="target"></span></h2>
+  <button id="restartBtn" onclick="restartGame()" style="display:none;">Chơi lại</button>
+  <h2> <span id="target"></span></h2>
   <div class="image-container" id="imageContainer"></div>
   <div id="result"></div>
 </div>
 
 <script>
   // Tài khoản và mật khẩu cố định để kiểm tra đăng nhập
-  const validUsername = "khang";
-  const validPassword = "123456";
+  const validUsername = "admin";
+  const validPassword = "123";
 
   // Game variables
   const allAnimals = [
-    { name: "Con Thỏ", url: "tho.jpg" },
-    { name: "Con Bướm", url: "buom.jpg" },
-    { name: "Con Bò", url: "bo.jpg" },
-    { name: "Con Cá", url: "ca.jpg" },
-    { name: "Con Chim", url: "chim.jpg" },
-    { name: "Con Gà", url: "ga.jpg" },
-    { name: "Con Gấu", url: "gau.jpg" },
-    { name: "Con Hà Mã", url: "hama.jpg" },
-    { name: "Con Hổ", url: "ho.jpg" },
-    { name: "Con Hươu Cao Cổ", url: "huoucaoco.jpg" },
-    { name: "Con Khỉ", url: "khi.jpg" },
-    { name: "Con Nai", url: "naisungtam.jpg" },
-    { name: "Con Ngựa", url: "ngua.jpg" },
-    { name: "Con Rùa Biển", url: "ruabien.jpg" },
-    { name: "Con Tôm", url: "tom.jpg" },
-    { name: "Con Trâu", url: "trau.jpg" },
-    { name: "Con Vịt", url: "vit.jpg" },
-    { name: "Con Chó", url: "cho.jpg" },
-    { name: "Con Mèo", url: "meo.jpg" },
-    { name: "Con Heo", url: "heo.jpg" }
+    { name: "con thỏ", url: "tho.jpg", description: "Động vật nhỏ, lông mềm, hai tai dài, thường nhảy bằng hai chân sau."},
+    { name: "con bướm", url: "buom.jpg",  description: "Đây là một loài côn trùng rất nhẹ và bay lượn trong vườn hoa vào ban ngày. Nó có bốn cánh lớn, nhiều màu sặc sỡ như đỏ, vàng, cam và xanh. Cơ thể của nó thon dài và có hai chiếc râu nhỏ trên đầu."},
+    { name: "con bò", url: "bo.jpg",  description: "Thân hình to lớn sống ở nông trại kêu moo moo cho sữa mỗi ngày."},
+    { name: "con cá", url: "ca.jpg",  description: "Bơi dưới nước có vây đủ màu sắc thở bằng mang và sống thành đàn"},
+    { name: "con chim", url: "chim.jpg",  description: "Có cánh biết bay thường hót vào sáng sớm làm tổ trên cây cao"},
+    { name: "con gà", url: "ga.jpg",  description: "Loài chim trong nhà có mào đỏ, đẻ trứng và có tiếng gáy đặc trưng."},
+    { name: "con gấu", url: "gau.jpg",  description: "Thân to lông dày có thể đứng bằng hai chân và thích ăn mật."},
+    { name: "con hà mã", url: "hama.jpg",  description: "Rất nặng sống gần sông miệng rộng và hay ngâm mình trong nước."},
+    { name: "con hổ", url: "ho.jpg",  description: "Có vằn đen cam nhanh nhẹn sống trong rừng và giỏi săn mồi, được mệnh danh là chúa tể sơn lâm."},
+    { name: "con hươu cao cổ", url: "huoucaoco.jpg",  description: "Cổ rất dài ăn lá trên cây cao và có chân dài."},
+    { name: "con khỉ", url: "khi.jpg",  description: "Nhanh nhẹn sống trên cây dùng tay khéo léo và thích ăn trái cây."},
+    { name: "con nai", url: "naisungtam.jpg",  description: "Có sừng thân nhỏ sống trong rừng thích ăn cỏ và hiền lành"},
+    { name: "con ngựa", url: "ngua.jpg",  description: "Chạy rất nhanh thường được cưỡi có bờm dài và thích ăn cỏ khô."},
+    { name: "con rùa biển", url: "ruabien.jpg",  description: "Mai cứng bơi giỏi sống ở biển đẻ trứng trên bãi cát."},
+    { name: "con tôm", url: "tom.jpg",  description: "Vỏ cứng nhiều chân bơi bằng cách cong thân và sống dưới nước."},
+    { name: "con trâu", url: "trau.jpg",  description: "To khỏe giúp người cày ruộng thích tắm bùn và ăn rơm."},
+    { name: "con vịt", url: "vit.jpg",  description: "Động vật gia cầm có mỏ bẹt biết bơi và sống gần ao."},
+    { name: "con chó", url: "cho.jpg",  description: "Trung thành giữ nhà nhanh nhẹn rất thân với con người."},
+    { name: "con mèo", url: "meo.jpg",  description: "Dáng nhỏ kêu meo meo thích nằm ngủ và bắt chuột giỏi."},
+    { name: "con heo", url: "heo.jpg",  description: "Thân tròn da trơn sống ở chuồng thích ăn và lăn trong bùn."}
   ];
 
   let correct = null; // con vật cần đoán của lượt hiện tại
   let selected = []; // 4 ảnh hiện tại
-  let currentRound = 0; // lượt chơi hiện tại
+  let currentRound = 1; // lượt chơi hiện tại
   let maxRounds = 10; // tổng số lượt
   let wrongCount = 0; // số lần đoán sai
-  let timer = 30; // thời gian 30 giây
+  let timer = 60; // thời gian 60 giây
   let intervalId = null;
   let isGameOver = false;
 
@@ -153,8 +246,8 @@
     if (username === validUsername && password === validPassword) {
       loginError.textContent = "";
       loginForm.style.display = "none";
-      gameContent.style.display = "block";
-      startGame();
+       document.getElementById("playbutton").style.display = "block";
+      //startGame();
     } else {
       loginError.textContent = "Tên tài khoản hoặc mật khẩu không đúng!";
     }
@@ -165,18 +258,20 @@
   }
 
   function startGame() {
-    currentRound = 0;
+      document.getElementById("playbutton").style.display = "none"; // ẩn nút
+  gameContent.style.display = "block"; // hiện trò chơi
+    currentRound = 1;
     wrongCount = 0;
-    timer = 30;
+    timer = 60;
     isGameOver = false;
     resultDiv.textContent = "";
-    statusDiv.textContent = `Thời gian còn lại: ${timer}s | Lượt: ${currentRound}/${maxRounds} | Sai: ${wrongCount}/3`;
+    statusDiv.textContent = `Thời gian còn lại: ${timer}s 🗼 Lượt: ${currentRound}/${maxRounds} 🗼 Sai: ${wrongCount}/3`;
 
     intervalId = setInterval(() => {
       timer--;
-      statusDiv.textContent = `Thời gian còn lại: ${timer}s | Lượt: ${currentRound}/${maxRounds} | Sai: ${wrongCount}/3`;
+      statusDiv.textContent = `Thời gian còn lại: ${timer}s 🗼 Lượt: ${currentRound}/${maxRounds} 🗼 Sai: ${wrongCount}/3`;
       if (timer <= 0) {
-        endGame(false, "Hết thời gian! Bạn thua.");
+        endGame(false, "Hết thời gian! Bạn đã không hoàn thành được thử thách.");
       }
     }, 1000);
 
@@ -187,7 +282,7 @@
   if (isGameOver) return;
 
   if (currentRound > maxRounds) {
-    endGame(true, "Chúc mừng! Bạn đã thắng.");
+    endGame(true, "Chúc mừng! Bạn đã hoàn thành được thử thách.");
     return;
   }
 
@@ -199,7 +294,7 @@
   // Chọn đáp án đúng trong 4 ảnh đó
   correct = selected[Math.floor(Math.random() * selected.length)];
 
-  targetSpan.textContent = correct.name;
+  targetSpan.textContent = "Chọn hình với mô tả: " + correct.description;
 
   imageContainer.innerHTML = "";
   selected.forEach(animal => {
@@ -211,20 +306,22 @@
       if (isGameOver) return;
 
       if (animal.name === correct.name) {
-        resultDiv.textContent = "Đúng rồi!";
-        resultDiv.style.color = "green";
         currentRound++; // tăng lượt khi đoán đúng
+        resultDiv.textContent = "Đúng rồi! Đó là " + correct.name;
+        resultDiv.style.color = "black";
         if (currentRound > maxRounds) {
-          endGame(true, "Chúc mừng! Bạn đã thắng.");
+          endGame(true, "Chúc mừng! Bạn đã hoàn thành thử thách.");
           return;
         }
-        nextRound(); // chuyển sang lượt kế tiếp
+        setTimeout(() => {
+          nextRound(); 
+        }, 1000); // đợi 1 giây 
       } else {
         wrongCount++;
         resultDiv.textContent = `Sai rồi! Bạn đã sai ${wrongCount} lần.`;
         resultDiv.style.color = "red";
         if (wrongCount >= 3) {
-          endGame(false, "Bạn đã sai quá 3 lần! Bạn thua.");
+          endGame(false, "Bạn đã sai quá 3 lần! Rất tiếc, bạn đã không hoàn thành được thử thách.");
         }
         // Không tăng lượt, phải đoán lại
       }
@@ -241,10 +338,18 @@
     resultDiv.style.color = win ? "green" : "red";
     targetSpan.textContent = "";
     imageContainer.innerHTML = "";
-    statusDiv.textContent = `Trò chơi kết thúc!`;
+    statusDiv.textContent = `Thử thách kết thúc!`;
+     document.getElementById("restartBtn").style.display = "inline-block"; 
   }
+  function restartGame() {
+  document.getElementById("restartBtn").style.display = "none";
+  startGame(); // gọi lại hàm bắt đầu game
+}
 </script>
 
+  <footer>
+    &copy; 2025 IGUESS. All rights reserved.
+  </footer>
 </body>
 </html>
 
